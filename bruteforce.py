@@ -17,163 +17,67 @@ with open('data.csv', 'r') as file:
 
 # print(final_values)
 
+videos = [('Video 1', 114, 4.57), ('Video 2', 32, 0.630),
+('Video 3', 20, 1.65), ('Video 4', 4, 0.085),
+('Video 5', 18, 2.15), ('Video 6', 80, 2.71),
+('Video 7', 5, 0.320)]
+
+def int_to_bin(n, nb):
+    """ n et nb sont de type int
+        n est le nombre à convertir en binaire
+        nb est le nombre de bits utilisés """
+    ch = ""
+    while n > 0:
+        r = n % 2
+        n = n // 2
+        ch = str(r) + ch
+    ch = (nb - len(ch)) * "0" + ch
+    return ch
+
+def ens_des_parties(ensemble):
+    """ ensemble est une liste de p-uplets """
+    nb = len(ensemble) # nombre d'éléments
+    n = 2 ** nb # nombre de parties
+    parties = [] # l'ensemble des parties
+
+    for i in range(1, n):
+        ch = int_to_bin(i, nb) # écriture de i sur nb bits
+        partie = [] # construction d'une partie
+        for j in range(len(ch)):
+            if ch[j] == "1":
+                partie.append(ensemble[j])
+        parties.append(partie) # la partie construite est ajoutée à la liste
+    return parties
+
+def duree_totale(liste):
+    d = 0
+    for triplet in liste:
+        d += triplet[1]
+    return d
+
+def taille_totale(liste):
+    t = 0
+    for triplet in liste:
+        t += triplet[2]
+    return t
+
+def recherche(ens_parties, contrainte):
+    duree_max = 0
+    solution = []
+    for partie in ens_parties: # un choix possible de fichiers
+        duree = duree_totale(partie)
+        taille = taille_totale(partie)
+        if taille <= contrainte and duree > duree_max:
+            duree_max = duree
+            solution = partie
+    return solution, duree_max
+
+def force_brute(fichiers, taille_max):
+    parties = ens_des_parties(fichiers)
+    return recherche(parties, taille_max)
+    
+choix = force_brute(videos, 5)
+duree_totale = choix[1]
+choix_fichiers = [fichier[0] for fichier in choix[0]]
+print(choix_fichiers, duree_totale)
 
-test_array =["a","b","c","d","e"]   
-
-# def bruteforce(charset, maxlength):
-#     return (''.join(candidate)
-#         for candidate in chain.from_iterable(product(charset, repeat=i)
-#         for i in range(1, maxlength + 1)))
-
-# def bruteforce(charset, maxlength):
-#     for i in range(1, maxlength + 1):
-#         for candidate in chain.from_iterable(product(charset, repeat=i)):
-#             print(candidate)
-#             return (''.join(candidate))
-
-# list(bruteforce(test_array, 5))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def imbricated_iteration_function(number_of_imbrications, array):
-#     iteration = 0
-
-#     for index in range(number_of_imbrications - 1):
-#         for value in array:
-#             if index > number_of_imbrications:
-#                 for value in array:
-#                     print(value)
-#             print("hey")
-#             # combinaison = value + value2 + value3
-
-
-#     print(value)
-
-
-
-
-
-
-
-test_array =["a","b","c","d","e","f"]   
-# test_array =[1,2,3,4,5] 
-# test_array = [
-#     {"action_1": 1},
-#     {"action_2": 2},  
-#     {"action_3": 3},  
-#     {"action_4": 4},   
-#     {"action_5": 5},
-# ]
-
-# test_array = {
-#     "action_1": "a",
-#     "action_2": "b",  
-#     "action_3": "c",  
-#     "action_4": "d",   
-#     "action_5": "e",
-# }
-
-# test_array = OrderedDict([
-#     ('action_1', '1'),
-#     ('action_2', '2'),
-#     ('action_3', '3'),
-#     ('action_4', '4'),
-#     ('action_5', '5'),
-# ])
-
-index = 0
-complete_list = []
-
-test_array1 = test_array
-test_array2 = test_array
-test_array3 = test_array
-
-# for index in range(len(test_array) - 1):
-#     # print(index)
-#     imbricated_iteration_function(len(test_array), test_array)
-
-
-# for key1, value1 in test_array1.items():
-#     for key2, value2 in test_array2.items():
-#         for key3, value3 in test_array3.items():
-#             if value1 != value2 and value1 != value3 and value3 != value2:
-#                 combinaison = value1 + value2 + value3
-#                 complete_list.append(combinaison)
-#                 # print(complete_list)
-
-
-# while depasse pas 500
-for value1 in test_array1:
-    for value2 in test_array2:
-        for value3 in test_array3:
-            if value1 != value2 and value1 != value3 and value3 != value2:
-                combinaison = value1 + value2 + value3
-                complete_list.append(combinaison)
-
-    del test_array1[index]
-
-    index += 1
-
-
-
-print(complete_list)
-
-
-
-
-
-
-
-# # #on va tester toutes les combinaisons pour chacun des numéro
-# # for index, element in enumerate(test_array):
-
-
-
-# #     # on limite a 4 combinaisons
-# #     if number_of_combinaison < 4:
-
-# #         print(len(test_array))
-
-# #         combinaison = 0
-
-# #         for i in range(len(test_array)):
-
-
-# #         # print(test_array[index])
-
-# #         # number_of_combinaison += 1
-
-        
-
-
-# #     # array_of_combinaison.append({index : element})
-
-# # print(array_of_combinaison)
-
-# # transformer l'array de nombre en array de dict pour retrouver le nom de l'action et la valeur initiale qui ne doit pas dépasser 500
-
-# # parcourir tableau, prendre premiere valeur
-
-
-
-# # calculer bénéfice de chaque action au bout de 2 ans, ajouter une colone valeur nette + 2 ans
-
-# #classer le tableau a partir des données de la colonne 3
-
-# # additionner les données de la colonne 1 sans dépasser 500
-
-# #si ça dépasse, passe au suivant jusqu'a approcher 500
