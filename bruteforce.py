@@ -27,20 +27,36 @@ list_of_actions = [
     ('action_7', 22, 7)
 ]
 
+def int_to_bin(n, nb):
+    """ n et nb sont de type int
+        n est le nombre à convertir en binaire
+        nb est le nombre de bits utilisés """
+    ch = ""
+    while n > 0:
+        r = n % 2
+        n = n // 2
+        ch = str(r) + ch
+    ch = (nb - len(ch)) * "0" + ch
+    return ch
 
 def create_combinaisons_list(list_of_actions):
     """ list_of_actions est une liste de p-uplets """
-    nb = len(list_of_actions) # nombre d'éléments
-    n = 2 ** nb # nombre de total_of_combinaisons
+    number_of_elements = len(list_of_actions) # nombre d'éléments
+    number_of_combinaisons = 2 ** number_of_elements # nombre de total_of_combinaisons
     total_of_combinaisons = [] # l'ensemble des total_of_combinaisons
 
-    for i in range(1, n):
-        binary_combinaison = bin(i)[2:] # écriture de i sur nb bits
+    for i in range(1, number_of_combinaisons):
+        # binary_combinaison = bin(i)[2:] # écriture de i sur nb bits
+        binary_combinaison = int_to_bin(i, number_of_elements)
+
         combinaison = [] # construction d'une combinaison
+        # print(binary_combinaison)
+        # print(len(binary_combinaison))
         for j in range(len(binary_combinaison)):
             if binary_combinaison[j] == "1":
                 combinaison.append(list_of_actions[j])
         total_of_combinaisons.append(combinaison) # la partie construite est ajoutée à la liste
+        # print(total_of_combinaisons)
     return total_of_combinaisons
 
 
@@ -48,12 +64,16 @@ def valeur_total(liste):
     valeur = 0
     for triplet in liste:
         valeur += triplet[1]
+    # print(valeur)
     return valeur
 
 def profit_total(liste):
     profit = 0
     for triplet in liste:
+        rounded_profit = round(triplet[1] + (triplet[1]/triplet[2]), 2)
         profit += triplet[2]
+        # print(rounded_profit)
+        # profit += rounded_profit
     return profit
 
 
@@ -68,16 +88,21 @@ def check_for_the_best_combinaison(total_of_combinaisons, limit_value):
             profit_max = profit
             valeur_max = valeur
             solution = combinaison
-    return solution, profit_max, valeur_max
+    return solution, valeur_max, profit_max
 
 def bruteforce(list_of_actions, limit_value):
     total_of_combinaisons = create_combinaisons_list(list_of_actions)
+    print(check_for_the_best_combinaison(total_of_combinaisons, limit_value)) # il renvoie la derniere !
     return check_for_the_best_combinaison(total_of_combinaisons, limit_value)
     
 choix = bruteforce(list_of_actions, 165)
 
-profit_total = choix[1]
-valeur_total = choix[2]
-choix_fichiers = [fichier[0] for fichier in choix[0]]
-print(choix_fichiers, valeur_total, profit_total)
+valeur_total = choix[1]
+profit_total = choix[2]
 
+choix_fichiers = [fichier[0] for fichier in choix[0]]
+print(choix_fichiers,valeur_total, profit_total)
+
+
+
+#probleme : il prend l'indice a partir de la gauche ???
