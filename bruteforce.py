@@ -17,67 +17,67 @@ with open('data.csv', 'r') as file:
 
 # print(final_values)
 
-videos = [('Video 1', 114, 4.57), ('Video 2', 32, 0.630),
-('Video 3', 20, 1.65), ('Video 4', 4, 0.085),
-('Video 5', 18, 2.15), ('Video 6', 80, 2.71),
-('Video 7', 5, 0.320)]
+list_of_actions = [
+    ('action_1', 20, 5), 
+    ('action_2', 30, 10),
+    ('action_3', 50, 15), 
+    ('action_4', 70, 20),
+    ('action_5', 60, 17), 
+    ('action_6', 80, 25),
+    ('action_7', 22, 7)
+]
 
-def int_to_bin(n, nb):
-    """ n et nb sont de type int
-        n est le nombre à convertir en binaire
-        nb est le nombre de bits utilisés """
-    ch = ""
-    while n > 0:
-        r = n % 2
-        n = n // 2
-        ch = str(r) + ch
-    ch = (nb - len(ch)) * "0" + ch
-    return ch
 
-def ens_des_parties(ensemble):
-    """ ensemble est une liste de p-uplets """
-    nb = len(ensemble) # nombre d'éléments
-    n = 2 ** nb # nombre de parties
-    parties = [] # l'ensemble des parties
+def create_combinaisons_list(list_of_actions):
+    """ list_of_actions est une liste de p-uplets """
+    nb = len(list_of_actions) # nombre d'éléments
+    n = 2 ** nb # nombre de total_of_combinaisons
+    total_of_combinaisons = [] # l'ensemble des total_of_combinaisons
 
     for i in range(1, n):
-        ch = int_to_bin(i, nb) # écriture de i sur nb bits
-        partie = [] # construction d'une partie
-        for j in range(len(ch)):
-            if ch[j] == "1":
-                partie.append(ensemble[j])
-        parties.append(partie) # la partie construite est ajoutée à la liste
-    return parties
+        binary_combinaison = bin(i)[2:] # écriture de i sur nb bits
+        combinaison = [] # construction d'une combinaison
+        for j in range(len(binary_combinaison)):
+            if binary_combinaison[j] == "1":
+                combinaison.append(list_of_actions[j])
+        total_of_combinaisons.append(combinaison) # la partie construite est ajoutée à la liste
+    return total_of_combinaisons
 
-def duree_totale(liste):
-    d = 0
+
+def valeur_total(liste):
+    valeur = 0
     for triplet in liste:
-        d += triplet[1]
-    return d
+        valeur += triplet[1]
+    return valeur
 
-def taille_totale(liste):
-    t = 0
+def profit_total(liste):
+    profit = 0
     for triplet in liste:
-        t += triplet[2]
-    return t
+        profit += triplet[2]
+    return profit
 
-def recherche(ens_parties, contrainte):
-    duree_max = 0
+
+def check_for_the_best_combinaison(total_of_combinaisons, limit_value):
+    profit_max = 0
+    valeur_max = 0
     solution = []
-    for partie in ens_parties: # un choix possible de fichiers
-        duree = duree_totale(partie)
-        taille = taille_totale(partie)
-        if taille <= contrainte and duree > duree_max:
-            duree_max = duree
-            solution = partie
-    return solution, duree_max
+    for combinaison in total_of_combinaisons: # un choix possible de fichiers
+        profit = profit_total(combinaison)
+        valeur = valeur_total(combinaison)
+        if valeur <= limit_value and profit > profit_max:
+            profit_max = profit
+            valeur_max = valeur
+            solution = combinaison
+    return solution, profit_max, valeur_max
 
-def force_brute(fichiers, taille_max):
-    parties = ens_des_parties(fichiers)
-    return recherche(parties, taille_max)
+def bruteforce(list_of_actions, limit_value):
+    total_of_combinaisons = create_combinaisons_list(list_of_actions)
+    return check_for_the_best_combinaison(total_of_combinaisons, limit_value)
     
-choix = force_brute(videos, 5)
-duree_totale = choix[1]
+choix = bruteforce(list_of_actions, 165)
+
+profit_total = choix[1]
+valeur_total = choix[2]
 choix_fichiers = [fichier[0] for fichier in choix[0]]
-print(choix_fichiers, duree_totale)
+print(choix_fichiers, valeur_total, profit_total)
 
