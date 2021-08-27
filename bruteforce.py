@@ -3,6 +3,7 @@ from collections import OrderedDict
 from itertools import chain, product
 
 final_values = []
+list_of_actions =[]
 
 with open('data.csv', 'r') as file:
     reader = csv.reader(file)
@@ -10,23 +11,11 @@ with open('data.csv', 'r') as file:
         try:
             value = int(row[1])
             percent = int(row[2])
-            # print(value + (value/percent))
-            final_values.append(round(value + (value/percent), 2))
+            list_of_actions.append((row[0], value, percent))
         except:
             pass
 
-# print(final_values)
-
-list_of_actions = [
-    ('action_1', 20, 5), 
-    ('action_2', 30, 10),
-    ('action_3', 50, 15), 
-    ('action_4', 70, 20),
-    ('action_5', 60, 17), 
-    ('action_6', 80, 25),
-    ('action_7', 22, 7)
-]
-
+print(list_of_actions)
 
 #TODO change variable name for int_to_bin
 
@@ -70,7 +59,6 @@ def profit_total(liste):
     for triplet in liste:
         rounded_profit = round(triplet[1] + (triplet[1]/triplet[2]), 2)
         profit += rounded_profit
-        # profit += triplet[2]
     return profit
 
 
@@ -89,10 +77,9 @@ def check_for_the_best_combinaison(total_of_combinaisons, limit_value):
 
 def bruteforce(list_of_actions, limit_value):
     total_of_combinaisons = create_combinaisons_list(list_of_actions)
-    print(check_for_the_best_combinaison(total_of_combinaisons, limit_value)) # il renvoie la derniere !
     return check_for_the_best_combinaison(total_of_combinaisons, limit_value)
     
-choix = bruteforce(list_of_actions, 165)
+choix = bruteforce(list_of_actions, 500)
 
 valeur_total = choix[1]
 profit_total = round((choix[2] - choix[1]),2)
