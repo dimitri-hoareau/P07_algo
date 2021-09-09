@@ -1,6 +1,6 @@
+
+
 import csv
-from collections import OrderedDict
-from itertools import chain, product
 
 final_values = []
 list_of_actions =[]
@@ -14,8 +14,6 @@ with open('data.csv', 'r') as file:
             list_of_actions.append((row[0], value, percent))
         except:
             pass
-
-print(list_of_actions)
 
 #TODO change variable name for int_to_bin
 
@@ -57,7 +55,8 @@ def valeur_total(liste):
 def profit_total(liste):
     profit = 0
     for triplet in liste:
-        rounded_profit = round(triplet[1] + (triplet[1]/triplet[2]), 2)
+        rounded_profit = round(triplet[1] + (triplet[1] * triplet[2]/100), 2)
+        # rounded_profit = triplet[2]
         profit += rounded_profit
     return profit
 
@@ -80,9 +79,17 @@ def bruteforce(list_of_actions, limit_value):
     return check_for_the_best_combinaison(total_of_combinaisons, limit_value)
     
 choix = bruteforce(list_of_actions, 500)
-
+print(choix)
 valeur_total = choix[1]
-profit_total = round((choix[2] - choix[1]),2)
+# profit_total = round((choix[2] - choix[1]),2)
+profit_total = round(choix[2], 2)
 
 choix_fichiers = [fichier[0] for fichier in choix[0]]
 print(choix_fichiers,valeur_total, profit_total)
+
+
+# TODO => bon calcul des pourcentages
+
+# explication bien https://www.youtube.com/watch?v=wDsZhd1wEuk
+
+
