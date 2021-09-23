@@ -1,21 +1,23 @@
-
-
 import csv
 
 final_values = []
 list_of_actions =[]
 
-with open('data.csv', 'r') as file:
+# with open('data.csv', 'r') as file:
+with open('dataset1_Python+P7.csv', 'r') as file:
+# with open('dataset2_Python+P7.csv', 'r') as file:
     reader = csv.reader(file)
     for row in reader:
         try:
-            value = int(row[1])
-            percent = int(row[2])
+            value = float(row[1])
+            percent = float(row[2])
             list_of_actions.append((row[0], value, percent))
         except:
             pass
 
 #TODO change variable name for int_to_bin
+
+print(list_of_actions)
 
 def int_to_bin(n, nb):
     """ n et nb sont de type int
@@ -79,16 +81,14 @@ def bruteforce(list_of_actions, limit_value):
     return check_for_the_best_combinaison(total_of_combinaisons, limit_value)
     
 choix = bruteforce(list_of_actions, 500)
-print(choix)
+# print(choix)
 valeur_total = choix[1]
 # profit_total = round((choix[2] - choix[1]),2)
 profit_total = round(choix[2], 2)
 
 choix_fichiers = [fichier[0] for fichier in choix[0]]
-print(choix_fichiers,valeur_total, profit_total)
+# print(choix_fichiers,valeur_total, profit_total)
 
-
-# TODO => bon calcul des pourcentages
 
 # explication bien https://www.youtube.com/watch?v=wDsZhd1wEuk
 
