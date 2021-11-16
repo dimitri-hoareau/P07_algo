@@ -66,20 +66,4 @@ print('Algo dynamique', sacADos_dynamique(50000, 'dataset1_Python+P7.csv'))
 
 
 
-# explication bien https://www.youtube.com/watch?v=wDsZhd1wEuk
 
-# multiplier par 100 OK
-# classer par valeur OK
-# supprimer si negatif OK
-# rediviser par 100 OK
-# donner la valeur totale en dessous des 500 OK
-#corriger percent pour brutforce OK
-# passer le csv en parametre OK
-# README OK
-#slide comparaiosn derniere OK
-# commentaires bruteforce OK
-#commentaire optimisé OK
-# preparer presentation
-# git
-
-#198.55 /197.96
